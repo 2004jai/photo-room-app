@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore functions
-import { db } from "../firebaseConfig";                   // Your Firestore instance
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const generateRoomCode = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -41,6 +41,7 @@ export default function RoomForm({ onRoomJoin }) {
       let newCode;
       let exists = true;
 
+      // Ensure unique room code by checking Firestore
       while (exists) {
         newCode = generateRoomCode();
         const roomRef = doc(db, "rooms", newCode);
@@ -60,12 +61,9 @@ export default function RoomForm({ onRoomJoin }) {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-black rounded-2xl shadow-lg p-8 mt-16 border-2 border-orange-500">
-      <h2
-        className="text-3xl text-center mb-6 text-orange-400 font-bold tracking-wider font-deco"
-        style={{ fontFamily: "'Monoton', cursive" }}
-      >
-        Photo Vibe 🎞️
+    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mt-12">
+      <h2 className="text-2xl font-bold text-center mb-6 text-indigo-700 select-none">
+        Join or Create a Room
       </h2>
 
       <input
@@ -74,29 +72,29 @@ export default function RoomForm({ onRoomJoin }) {
         placeholder="Enter 6-digit Room Code"
         maxLength={6}
         value={roomCode}
-        onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, ""))}
-        disabled={false}
-        className="w-full p-3 text-center tracking-widest text-lg text-white bg-zinc-900 border border-orange-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 mb-5 transition duration-300"
+        onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, ""))} // only digits allowed
+        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 mb-4 font-mono text-center tracking-widest text-lg"
+        disabled={loading}
       />
 
       <button
         onClick={handleJoin}
         disabled={loading}
-        className="w-full bg-orange-500 hover:bg-orange-600 text-black font-bold py-3 rounded-xl mb-4 transition-all duration-300 transform hover:scale-105 shadow-md"
+        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white py-3 rounded-md font-semibold mb-4 transition"
       >
-        {loading ? "Joining..." : "Join Room"}
+        {loading ? "Please wait..." : "Join Room"}
       </button>
 
       <button
         onClick={handleCreate}
         disabled={loading}
-        className="w-full bg-white hover:bg-orange-300 text-black font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md"
+        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white py-3 rounded-md font-semibold transition"
       >
         {loading ? "Creating..." : "Create New Room"}
       </button>
 
       {error && (
-        <p className="text-red-500 text-center mt-4 font-semibold select-none">
+        <p className="text-red-600 text-center mt-5 font-medium select-none" role="alert">
           {error}
         </p>
       )}
