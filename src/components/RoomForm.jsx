@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Only import Firestore functions here
-import { db } from "../firebaseConfig";                   // Import only db and other initialized instances from your config
-
+import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore functions
+import { db } from "../firebaseConfig";                   // Your Firestore instance
 
 const generateRoomCode = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -76,7 +75,7 @@ export default function RoomForm({ onRoomJoin }) {
         maxLength={6}
         value={roomCode}
         onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, ""))}
-        disabled={loading}
+        disabled={false}
         className="w-full p-3 text-center tracking-widest text-lg text-white bg-zinc-900 border border-orange-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 mb-5 transition duration-300"
       />
 
